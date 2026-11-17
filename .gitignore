@@ -1,0 +1,12 @@
+
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db
+
+# Ignore datasets
+data/raw/*.csv
+data/processed/*.csv
