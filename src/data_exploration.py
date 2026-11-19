@@ -18,10 +18,8 @@ print(df.isnull().sum())
 #duplicated rows
 print("\n duplicated rows")
 print(df.duplicated().sum())
-# 8. Unique values in categorical columns
+#Unique values in categorical columns
 print("\n category ")
 print(df["category"].unique())
 print("\n region")
 print(df["region"].unique())
-
-

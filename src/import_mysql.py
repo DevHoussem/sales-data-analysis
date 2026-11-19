@@ -6,7 +6,6 @@ from sqlalchemy import create_engine, URL, text
 # Project paths
 base_dir = Path(__file__).resolve().parent.parent
 csv_file = base_dir / "data" / "processed" / "superStore_clean.csv"
-
 # Database connection
 connection_url = URL.create(
     "mysql+pymysql",
@@ -16,17 +15,14 @@ connection_url = URL.create(
     port=3306,
     database="sales_analytics"
 )
-
 engine = create_engine(connection_url)
 
 try:
     # Read cleaned CSV
     df = pd.read_csv(csv_file)
-
     # Prepare date column
     df["order_date"] = pd.to_datetime( df["order_date"],errors="coerce").dt.date
-
-    # Select the database columns in the correct order
+    # Select the database column
     columns = [
         "order_id",
         "order_date",
@@ -39,26 +35,19 @@ try:
         "discount",
         "profit"
     ]
-
     df = df[columns]
-
     # Replace existing imported records, then insert fresh data
     with engine.begin() as connection:
         connection.execute(text("DELETE FROM sales"))
-
         df.to_sql(
             name="sales",
-            con=connection,
+            conn=connection,
             if_exists="append",
             index=False,
-            chunksize=1000
         )
-
     print("Data imported successfully!")
     print("Rows imported:", len(df))
-
 except Exception as error:
     print("An error occurred:", error)
-
 finally:
     engine.dispose()

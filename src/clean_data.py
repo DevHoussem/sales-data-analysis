@@ -1,12 +1,12 @@
 import pandas as pd
 from pathlib import Path
-
+#prepare input and output files
 base_dir=Path(__file__).resolve().parent.parent
 input_file=base_dir/"data"/"raw"/"SuperStoreOrders.csv"
 output_file=base_dir/"data"/"processed"/"superStore_clean.csv"
-
+#show the original dataset
 df=pd.read_csv(input_file)
-print("===== original dataset ======")
+print("original dataset: ")
 print("rows:",len(df))
 print("columns:",len(df.columns))
 # clean columns names
@@ -32,20 +32,20 @@ for column in ["quantity", "discount"]:
 #remove unnecessary spaces from text
 for column in categorical_columns:
     df[column] = df[column].str.strip()
-
-print("\n===== CLEANED DATASET =====")
+#show the result dataset
+print("\ncleaned dataset ")
 print("Rows:", len(df))
 print("Columns:", len(df.columns))
-
+#show the missing values of the result dataset
 print("\nMissing values after cleaning:")
 print(df.isnull().sum())
-
+#show the duplicated rows of the result dataset
 print("\nDuplicate rows after cleaning:")
 print(df.duplicated().sum())
-
+#show its info
 print(df.info())
 
-# 8. Save cleaned dataset
+# Save cleaned dataset into output csv file
 output_file.parent.mkdir(parents=True, exist_ok=True)
 df.to_csv(output_file, index=False)
 
